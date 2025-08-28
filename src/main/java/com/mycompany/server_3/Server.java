@@ -29,20 +29,16 @@ public class Server {
             
             while(!serverSocket.isClosed()){//Ejecuta el servidor mientras este se encuentra abierto
                 Socket socket = serverSocket.accept();//El servidor se mantiene en espera hasta que entre un socket nuevo de usuario
-                System.out.println("A new user has connected! ");
+                System.out.println("A new user has connected! ");//Respuesta del servidor
                 ClientHandler clientHandler = new ClientHandler(socket); //Esta clase hace que cada nueva instancia se maneje dentro de un "thread" por separado, lo que nos permite tener multiples usuarios
                 
                 
-                Thread thread = new Thread(clientHandler);
+                Thread thread = new Thread(clientHandler); //Crea un nuevo thread en donde se va a estar manejando el nuevo usuario
                 thread.start();
             }
-            
-            
         }catch(IOException e){
             e.printStackTrace();
         }
-        
-        
     }
     
     
@@ -59,20 +55,13 @@ public class Server {
     
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(1234);//Creacion de objeto de tipo serversocket
-            Server server = new Server(serverSocket);//Creacion de servidor que usa el socket como parametro
+            ServerSocket serverSocket = new ServerSocket(777);//Creacion de objeto de tipo serversocket el cual espera la conexion y mandado de datos
+            Server server = new Server(serverSocket);//Creacion de instancia de la clase server 
             server.startServer();//Inicio del servidor
-            
-            
             
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-        
-        
+        } 
     }
     
     

@@ -1,6 +1,13 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+
+
+
+Esta clase lo que hace es que va a manejar los distintos usuarios que se conecten al chat mediante threads diferentes
+Esto ya que el programa por default solamente puede ejecutar un proceso a la vez
+Los threads permiten que se ejecuten distintos procesos de manera simultanea
+
  */
 package com.mycompany.server_3;
 
@@ -42,16 +49,16 @@ public class ClientHandler implements Runnable{
     
     
     @Override
-    public void run() {
+    public void run() {//El metodo run hace que las acciones de cada nuevo cliente se ejecuten en un thread/espacio aparte, permitiendo asi el chat simultaneo entre los distintos usuarios
         String messageFromClient;
         
         while(socket.isConnected()){
             try{
-                messageFromClient = bufferedReader.readLine();
-                broadcastMessage(messageFromClient);
+                messageFromClient = bufferedReader.readLine();//Captura los mensajes que se manden por el cliente
+                broadcastMessage(messageFromClient); //Ejecuta el proceso para mandar el mensaje capturado a los demas usuarios
                 
             }catch(IOException e){
-                closeEverything(socket, bufferedReader, bufferedWriter);
+                closeEverything(socket, bufferedReader, bufferedWriter);//Cierra todo en caso que ocurra un error
                 break;
             }   
         }
@@ -64,6 +71,7 @@ public class ClientHandler implements Runnable{
                     clientHandler.bufferedWriter.write(messagetoSend);
                     clientHandler.bufferedWriter.newLine();
                     clientHandler.bufferedWriter.flush();
+                    //Se hace en base al clientHandler ya que este es el espacio en donde se encuentran todos los usuarios conectados al chat
                 }
             }catch(IOException e){
                 closeEverything(socket, bufferedReader, bufferedWriter);
@@ -76,7 +84,7 @@ public class ClientHandler implements Runnable{
         broadcastMessage("SERVIDOR: "+clientUsername+" ha dejado el chat!");
     }
     
-    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
+    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){//Metodo que cierra todos los recursos generados por 
         removeClientHandler();
         try{
             if(bufferedReader!= null){

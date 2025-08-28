@@ -20,12 +20,12 @@ import java.util.logging.Logger;
  */
 public class Client {
     private Socket socket;
-    private BufferedReader bufferedReader;
-    private BufferedWriter bufferedWriter;
+    private BufferedReader bufferedReader;//Lee señales entrantes
+    private BufferedWriter bufferedWriter; //Escribe señales   al final todo esto se dirige al flujo del socket
     private String username;
     
     
-    public Client(Socket socket, String username){
+    public Client(Socket socket, String username){//Constructor de cliente, donde se inicializa su respectivo socket y readers y writers
         try{
             this.socket=socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -38,13 +38,13 @@ public class Client {
     
     public void sendMessage(){
         try{
-            bufferedWriter.write(username);
+            bufferedWriter.write(username);//Escribe el nombre de usuario en chat //Lo escribe dentro del buffered writer
             bufferedWriter.newLine();
             bufferedWriter.flush();
             
             Scanner lea = new Scanner(System.in);
             lea.useDelimiter("\n");
-            while(socket.isConnected()){
+            while(socket.isConnected()){//Funcionalidad de mandar el mensaje, mostrar en pantalla
                 String messageToSend = lea.nextLine();
                 bufferedWriter.write(username+ ": "+messageToSend);
                 bufferedWriter.newLine();
@@ -100,7 +100,7 @@ public class Client {
         String username = scanner.next();
         Socket socket;
         try {
-            socket = new Socket("Localhost", 1234);
+            socket = new Socket("Localhost", 777);
             Client client = new Client(socket,username);
             client.listenForMessage();
             client.sendMessage();
